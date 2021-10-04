@@ -1,7 +1,9 @@
 @model IDocument
 
 @{
-    string excerpt = Model.GetString(Statiq.Html.HtmlKeys.Excerpt);
+    var excerpt = Model.GetString(Statiq.Html.HtmlKeys.Excerpt);
+    
+    var tags = Model.Get<List<string>>("Tags");
 }
 
 <article class="card mb-6">
@@ -31,18 +33,11 @@
 							</span>
 						</div>
 						<ul class="column tags pl-0">
-							<li class="tag is-link is-light">
-								@{
-									var aa = Model.GetMetadata("Tags");
-									
-									if(aa != null){
-										Console.WriteLine("true");
-									}else{
-										Console.WriteLine("false");
-									}
-								}
-								<a class="has-text-dark" href="/tags/Development/">開発</a>
-							</li>
+							@foreach(var tag in tags){
+								<li class="tag is-link is-light">
+									<a class="has-text-dark" href="@Context.GetLink($"/tags/{tag}")">@tag</a>
+								</li>
+							}
 						</ul>
 					</div>
 				</div>
