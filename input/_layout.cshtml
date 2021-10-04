@@ -1,3 +1,7 @@
+@{
+	var title = Document.GetString("Title") ?? Document.GetString("SiteTitle");
+    var isPost = Document.GetBool("IsPost") && title != "Tags" && title != "Archive";
+}
 <!DOCTYPE html>
 <html class="has-background-light" lang="ja">
 
@@ -84,7 +88,56 @@
 				<div class="columns is-desktop">
 					<div class="column is-three-quarters">
 						<main>
-							@RenderBody()
+							@if(isPost){
+								var articleTags = Document.Get<List<string>>("Tags");
+								<article class="card mb-6">
+									<header>
+										<div class="card-content pb-0">
+											<h1 class="title mb-4">
+												@Html.DocumentLink(Document)
+											</h1>
+											<div class="columns mt-0 mb-0 is-vcentered">
+												<div class="column is-narrow pt-0">
+													<div class="columns is-mobile is-vcentered">
+														<div class="column is-narrow pr-0 is-flex">
+															<span class="icon">
+																<i class="fas fa-calendar-alt"></i>
+															</span>
+														</div>
+														<time class="column pl-0 is-narrow">
+															<span>@Document.GetDateTime(WebKeys.Published).ToLongDateString()</span>
+														</time>
+													</div>
+												</div>
+												<div class="column pt-0">
+													<div class="columns is-mobile is-vcentered">
+														<div class="column is-narrow pr-0 is-flex">
+															<span class="icon">
+																<i class="fas fa-tags"></i>
+															</span>
+														</div>
+														<ul class="column tags pl-0">
+															@foreach(var tag in articleTags){
+																<li class="tag is-link is-light">
+																	<a class="has-text-dark" href="@Context.GetLink($"/tags/{tag}")">@tag</a>
+																</li>
+															}
+														</ul>
+													</div>
+												</div>
+											</div>
+										</div>
+									</header>
+									
+									<div class="card-content pt-0">
+										<div class="content">
+											@RenderBody()
+										</div>
+									</div>
+								</article>
+							}else{
+								@RenderBody()
+							}
 						</main>
 					</div>
 					<div class="column">
