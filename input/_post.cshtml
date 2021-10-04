@@ -4,16 +4,60 @@
     string excerpt = Model.GetString(Statiq.Html.HtmlKeys.Excerpt);
 }
 
-<div class="post-preview">
-    <h2 class="post-title">@Html.DocumentLink(Model)</h2>
-    @if(Model.ContainsKey("Lead"))
-    {
-        <div class="post-subtitle">@Model.GetString("Lead")</div>
-    }
-    <p class="post-meta">Published on @Model.GetDateTime(WebKeys.Published).ToLongDateString()</p>                
-    @if (!string.IsNullOrEmpty(excerpt))
-    {
-        @Html.Raw(excerpt)
-        <p class="small"><a href="@Context.GetLink(Model)">Read more...</a></p>
-    }
-</div>
+<article class="card mb-6">
+	<header>
+		<div class="card-content pb-0">
+			<h1 class="title mb-4">
+				@Html.DocumentLink(Model)
+			</h1>
+			<div class="columns mt-0 mb-0 is-vcentered">
+				<div class="column is-narrow pt-0">
+					<div class="columns is-mobile is-vcentered">
+						<div class="column is-narrow pr-0 is-flex">
+							<span class="icon">
+								<i class="fas fa-calendar-alt"></i>
+							</span>
+						</div>
+						<time class="column pl-0 is-narrow">
+							<span>@Model.GetDateTime(WebKeys.Published).ToLongDateString()</span>
+						</time>
+					</div>
+				</div>
+				<div class="column pt-0">
+					<div class="columns is-mobile is-vcentered">
+						<div class="column is-narrow pr-0 is-flex">
+							<span class="icon">
+								<i class="fas fa-tags"></i>
+							</span>
+						</div>
+						<ul class="column tags pl-0">
+							<li class="tag is-link is-light">
+								@{
+									var aa = Model.GetMetadata("Tags");
+									
+									if(aa != null){
+										Console.WriteLine("true");
+									}else{
+										Console.WriteLine("false");
+									}
+								}
+								<a class="has-text-dark" href="/tags/Development/">開発</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</header>
+	<div class="card-content pt-0">
+		<div class="content">
+			<p>@Html.Raw(excerpt)</p>
+		</div>
+		<a class="button is-fullwidth is-link is-outlined" href="@Context.GetLink(Model)">
+			<span>続きを読む</span>
+			<span class="icon">
+				<i class="fas fa-chevron-right"></i>
+			</span>
+		</a>
+	</div>
+</article>
