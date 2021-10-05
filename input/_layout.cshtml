@@ -68,13 +68,6 @@
   }
   
   @RenderSection("Head", false)
-		<style>
-			.sticky {
-			    position:sticky;
-			    top:0;
-			    z-index: 100;
-			}
-		</style>
 </head>
 
 <body>
@@ -224,10 +217,32 @@
 								</form>
 							</div>
 						</aside>
+						<aside class="mt-5 ml-2">
+				            <ul>
+				                @{
+				                    IDocument rssFeed = Outputs["**/*.rss"].FirstOrDefault();
+				                    IDocument atomFeed = Outputs["**/*.atom"].FirstOrDefault();
+				                }
+				                @if (rssFeed != null) {
+				                    <li>
+				                        <a href="@Context.GetLink(rssFeed)"><i class="fa fa-rss"></i> RSS Feed</a>
+				                    </li>
+				                }
+				                @if (atomFeed != null) {
+				                    <li>
+				                        <a href="@Context.GetLink(atomFeed)"><i class="fa fa-rss"></i> Atom Feed</a>
+				                    </li>
+				                }
+				            </ul>
+						</aside>
 					</div>
 				</div>
 			</div>
 		</div>
+
+  <!-- Footer -->  
+  @RenderSectionOrPartial("Footer", "_footer")
+
 
   @RenderSection("Scripts", false)
 
