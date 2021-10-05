@@ -48,9 +48,8 @@
   <link rel="shortcut icon" href="@Context.GetLink("/favicon.ico")" type="image/x-icon">
   <link rel="icon" href="@Context.GetLink("/favicon.ico")" type="image/x-icon">
 
-		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
   
-  <!-- Custom styles for this template -->
   <link href="@Context.GetLink("/css/blog.css")" rel="stylesheet">
   
   <script src="https://cdn.jsdelivr.net/npm/prismjs@1.19.0/components/prism-core.min.js"></script>
@@ -242,40 +241,8 @@
   <!-- Footer -->  
   @RenderSectionOrPartial("Footer", "_footer")
 
-
-  @RenderSection("Scripts", false)
-
-  <!-- Custom scripts for this template -->
-  <script src="@Context.GetLink("/js/clean-blog.js")"></script>
-<script src="https://kit.fontawesome.com/aa97a90330.js" crossorigin="anonymous"></script>
-		<script>
-		document.addEventListener('DOMContentLoaded', () => {
-
-		  // Get all "navbar-burger" elements
-		  const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
-
-		  // Check if there are any navbar burgers
-		  if ($navbarBurgers.length > 0) {
-
-		    // Add a click event on each of them
-		    $navbarBurgers.forEach( el => {
-		      el.addEventListener('click', () => {
-
-		        // Get the target from the "data-target" attribute
-		        const target = el.dataset.target;
-		        const $target = document.getElementById(target);
-
-		        // Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
-		        el.classList.toggle('is-active');
-		        $target.classList.toggle('is-active');
-
-		      });
-		    });
-		  }
-
-		});
-	</script>
-		<script type="text/javascript" src="https://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>
+	@Html.Partial("_scripts")
+	@RenderSection("Scripts", false)
 </body>
 
 </html>
