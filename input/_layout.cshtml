@@ -179,36 +179,13 @@
 						<aside class="mt-5">
 							<h1 class="title is-5">最新記事</h1>
 							<nav class="panel">
-								<a class="panel-block">
-									<span class="panel-icon">
-										<i class="fas fa-book" aria-hidden="true"></i>
-									</span>DelegateでLINQのWhere条件を外から渡す 
-								</a>
-								<a class="panel-block">
-									<span class="panel-icon">
-										<i class="fas fa-book" aria-hidden="true"></i>
-									</span>marksheet 
-								</a>
-								<a class="panel-block">
-									<span class="panel-icon">
-										<i class="fas fa-book" aria-hidden="true"></i>
-									</span>minireset.css 
-								</a>
-								<a class="panel-block">
-									<span class="panel-icon">
-										<i class="fas fa-book" aria-hidden="true"></i>
-									</span>jgthms.github.io 
-								</a>
-								<a class="panel-block">
-									<span class="panel-icon">
-										<i class="fas fa-code-branch" aria-hidden="true"></i>
-									</span>daniellowtw/infboard 
-								</a>
-								<a class="panel-block">
-									<span class="panel-icon">
-										<i class="fas fa-code-branch" aria-hidden="true"></i>
-									</span>mojs 
-								</a>
+								@foreach(var article in Outputs.Get("posts.html").GetChildren().OrderByDescending(x => x.GetDateTime(WebKeys.Published)).Take(5)){
+									<a class="panel-block" href="@Context.GetLink(article)">
+										<span class="panel-icon">
+											<i class="fas fa-book" aria-hidden="true"></i>
+										</span>@article.GetTitle()
+									</a>
+								}
 							</nav>
 						</aside>
 						<aside class="mt-5">
