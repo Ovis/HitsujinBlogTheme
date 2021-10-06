@@ -23,8 +23,6 @@
 	    pagerRangeMax = Math.Min(pagerMinCount - 1 + maxPagerSize, maxPage);
 	}
 
-	Console.WriteLine($"{Model.GetString(Keys.GroupKey)}");
-
 	var firstPageUrl = isIndexPage ? @Context.GetLink($"/") : @Context.GetLink($"/{pagePath}/{Model.GetString("GroupKey")}");
 	var lastPageUrl = isIndexPage ? @Context.GetLink($"/{pagePath}/{maxPage}") : @Context.GetLink($"/{pagePath}/{Model.GetString(Keys.GroupKey)}/{maxPage}");
 
@@ -38,6 +36,7 @@
     IDocument newer = Model.GetDocument(Keys.Previous);
     IDocument older = Model.GetDocument(Keys.Next);
 }
+
 @if (older != null || newer != null)
 {
 	<nav class="pagination is-centered" role="navigation" aria-label="pagination">
@@ -51,13 +50,15 @@
 
 		<ul class="pagination-list">
 			@if(pagerMinCount != 1){
-			
                 <li class="page-item">
                     <a class="pagination-link @(currentPage == 1 ? "is-current" : "")" href="@firstPageUrl">1</a>
                 </li>
-				<li>
-					<span class="pagination-ellipsis">&hellip;</span>
-				</li>
+                
+				@if((pagerMinCount -1) != 1){
+					<li>
+						<span class="pagination-ellipsis">&hellip;</span>
+					</li>
+				}
 			}
 			
             @{
@@ -80,10 +81,12 @@
 	            }
             }
             
-			@if(maxPage != currentPage && currentPage != (maxPage - 1)){
-				<li>
-					<span class="pagination-ellipsis">&hellip;</span>
-				</li>
+			@if(maxPage != currentPage && maxPage != pagerRangeMax){
+				@if((pagerRangeMax + 1) != maxPage){
+					<li>
+						<span class="pagination-ellipsis">&hellip;</span>
+					</li>
+				}
 
                 <li class="page-item">
                     <a class="pagination-link" href="@lastPageUrl">@maxPage</a>
