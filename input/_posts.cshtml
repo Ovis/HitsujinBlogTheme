@@ -11,19 +11,72 @@
 }
 @if (older != null || newer != null)
 {
-    <div>
-        <div class="float-sm-left">
-            @if (newer != null)
-            {
-                <a class="btn btn-primary" href="@Context.GetLink(newer)" role="button"><i class="fas fa-angle-double-left"></i> Newer</a>
+	var pagerMinCount = 1;
+	var maxPagerSize = 5;
+	var currentPage = Model.GetInt(Keys.Index);
+	var maxPage = Model.GetInt(Keys.TotalPages);
+
+	var pagerRangeMax = Math.Min(maxPagerSize, maxPage);
+
+	if (Math.Ceiling(maxPagerSize / 2.0) < (currentPage))
+	{
+	    pagerMinCount = (int)Math.Min(
+	        Math.Max(
+	            1.0,
+	            currentPage - Math.Ceiling(maxPagerSize / 2.0)
+	            ),
+	        Math.Max(1.0, maxPage - maxPagerSize + 1)
+	        );
+
+	    pagerRangeMax = Math.Min(pagerMinCount - 1 + maxPagerSize, maxPage);
+	}
+
+	<nav class="pagination is-centered" role="navigation" aria-label="pagination">
+
+		@if (newer != null)
+		{
+		    <a class="btn btn-primary pagination-previous" href="@Context.GetLink(newer)" role="button"><i class="fas fa-angle-double-left"></i> Newer</a>
+		}else{
+			<a class="btn btn-primary pagination-previous" disabled role="button"><i class="fas fa-angle-double-left"></i> Newer</a>
+		}
+
+		<ul class="pagination-list">
+			@if(pagerMinCount != 1){
+                <li class="page-item">
+                    <a class="pagination-link @(currentPage == 1 ? "is-current" : "")" href="@Context.GetLink($"/")">1</a>
+                </li>
+				<li>
+					<span class="pagination-ellipsis">&hellip;</span>
+				</li>
+			}
+			
+            @{
+	            for (var i = pagerMinCount; i <= pagerRangeMax; i++)
+	            {
+	            	var isCurrent = currentPage == i ? "is-current" : "";
+	            	var url = i == 1 ? Context.GetLink($"/") : Context.GetLink($"/page/{i}");
+	            
+	                <li class="page-item">
+	                    <a class="pagination-link @isCurrent" href="@url">@i</a>
+	                </li>
+	            }
             }
-        </div>
-        <div class="float-sm-right">
-            @if (older != null)
-            {
-                <a class="btn btn-primary" href="@Context.GetLink(older)" role="button">Older <i class="fas fa-angle-double-right"></i></a>
-            }
-        </div>
-        <div class="clearfix"></div>
-    </div>
+            
+			@if(maxPage != currentPage && currentPage != (maxPage - 1)){
+				<li>
+					<span class="pagination-ellipsis">&hellip;</span>
+				</li>
+
+                <li class="page-item">
+                    <a class="pagination-link" href="@Context.GetLink($"/page/{maxPage}")">@maxPage</a>
+                </li>
+			}
+		</ul>
+		@if (older != null)
+		{
+		    <a class="btn btn-primary pagination-next" href="@Context.GetLink(older)" role="button">Older <i class="fas fa-angle-double-right"></i></a>
+		}else{
+			<a class="btn btn-primary pagination-next" disabled role="button">Older <i class="fas fa-angle-double-right"></i></a>
+		}
+	</nav>
 }
