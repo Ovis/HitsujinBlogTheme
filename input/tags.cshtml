@@ -4,7 +4,7 @@ ArchiveKey: Tags
 ArchiveKeyComparer: => StringComparer.OrdinalIgnoreCase.ToConvertingEqualityComparer()
 ArchiveDestination: >
   => GetInt("Index") <= 1 ? $"tags/{NormalizedPath.OptimizeFileName(GetString("GroupKey"))}/index.html" : $"tags/{NormalizedPath.OptimizeFileName(GetString("GroupKey"))}/{GetInt("Index")}.html"
-ArchivePageSize: 10
+ArchivePageSize: 3
 ArchiveOrderKey: Published
 ArchiveOrderDescending: true
 Title: Tags
@@ -12,7 +12,14 @@ ArchiveTitle: => GetString("GroupKey")
 ---
 @if (Document.ContainsKey(Keys.GroupKey))
 {
-	@Html.Partial("/_posts.cshtml", Document)
+	@Html.Partial("/_posts.cshtml", 
+					Document,
+					new ViewDataDictionary(ViewData)
+                                {
+                                    { "path", "tags" },
+                                    { "isIndex", "false" }
+                                }
+				)
 }
 else
 { 

@@ -8,4 +8,11 @@ ArchiveOrderKey: Published
 ArchiveOrderDescending: true
 ArchiveTitle: => GetString("Title")
 ---
-@Html.Partial("/_posts.cshtml", Document)
+@Html.Partial("/_posts.cshtml", 
+				Document,
+				new ViewDataDictionary(ViewData)
+                            {
+                                { "path", "page" },
+                                { "isIndex", "true" }
+                            }
+			)

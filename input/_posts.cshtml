@@ -1,23 +1,15 @@
 @model IDocument
-
-@foreach (IDocument post in Model.GetChildren())
-{
-    @Html.Partial("/_post.cshtml", post)
-}
-
 @{
-    IDocument newer = Model.GetDocument(Keys.Previous);
-    IDocument older = Model.GetDocument(Keys.Next);
-}
-@if (older != null || newer != null)
-{
+	var pagePath = ViewData["path"];
+	var isIndexPage = bool.Parse(ViewData["isIndex"].ToString());
+
 	var pagerMinCount = 1;
 	var maxPagerSize = 5;
 	var currentPage = Model.GetInt(Keys.Index);
 	var maxPage = Model.GetInt(Keys.TotalPages);
 
 	var pagerRangeMax = Math.Min(maxPagerSize, maxPage);
-
+	
 	if (Math.Ceiling(maxPagerSize / 2.0) < (currentPage))
 	{
 	    pagerMinCount = (int)Math.Min(
@@ -31,6 +23,23 @@
 	    pagerRangeMax = Math.Min(pagerMinCount - 1 + maxPagerSize, maxPage);
 	}
 
+	Console.WriteLine($"{Model.GetString(Keys.GroupKey)}");
+
+	var firstPageUrl = isIndexPage ? @Context.GetLink($"/") : @Context.GetLink($"/{pagePath}/{Model.GetString("GroupKey")}");
+	var lastPageUrl = isIndexPage ? @Context.GetLink($"/{pagePath}/{maxPage}") : @Context.GetLink($"/{pagePath}/{Model.GetString(Keys.GroupKey)}/{maxPage}");
+
+}
+@foreach (IDocument post in Model.GetChildren())
+{
+    @Html.Partial("/_post.cshtml", post)
+}
+
+@{
+    IDocument newer = Model.GetDocument(Keys.Previous);
+    IDocument older = Model.GetDocument(Keys.Next);
+}
+@if (older != null || newer != null)
+{
 	<nav class="pagination is-centered" role="navigation" aria-label="pagination">
 
 		@if (newer != null)
@@ -42,8 +51,9 @@
 
 		<ul class="pagination-list">
 			@if(pagerMinCount != 1){
+			
                 <li class="page-item">
-                    <a class="pagination-link @(currentPage == 1 ? "is-current" : "")" href="@Context.GetLink($"/")">1</a>
+                    <a class="pagination-link @(currentPage == 1 ? "is-current" : "")" href="@firstPageUrl">1</a>
                 </li>
 				<li>
 					<span class="pagination-ellipsis">&hellip;</span>
@@ -54,7 +64,15 @@
 	            for (var i = pagerMinCount; i <= pagerRangeMax; i++)
 	            {
 	            	var isCurrent = currentPage == i ? "is-current" : "";
-	            	var url = i == 1 ? Context.GetLink($"/") : Context.GetLink($"/page/{i}");
+	            	var url = string.Empty;
+	            	
+	            	if(i == 1){
+	            		url = firstPageUrl;
+	            	}else if(i == maxPage){
+	            		url = lastPageUrl;
+	            	}else{
+	            		url = isIndexPage ? @Context.GetLink($"/{pagePath}/{i}") : @Context.GetLink($"/{pagePath}/{Model.GetString("GroupKey")}/{i}");
+	            	}
 	            
 	                <li class="page-item">
 	                    <a class="pagination-link @isCurrent" href="@url">@i</a>
@@ -68,7 +86,7 @@
 				</li>
 
                 <li class="page-item">
-                    <a class="pagination-link" href="@Context.GetLink($"/page/{maxPage}")">@maxPage</a>
+                    <a class="pagination-link" href="@lastPageUrl">@maxPage</a>
                 </li>
 			}
 		</ul>
