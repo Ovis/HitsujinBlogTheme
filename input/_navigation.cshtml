@@ -14,10 +14,10 @@
 			<div class="navbar-menu has-background-grey-lighter" id="navbar">
 				<div class="navbar-end">
 					<a class="navbar-item" href="@Context.GetLink("/")">Home</a>
-					<a class="navbar-item">About</a>
-					<a class="navbar-item">Archive</a>
+					<a class="navbar-item" href="@Context.GetLink(Outputs.Get("about.html"))">About</a>
+					<a class="navbar-item" href="@Context.GetLink(Outputs.Get("posts.html"))">Archive</a>
 					<a class="navbar-item" href="@Context.GetLink(Outputs.Get("tags.html"))">Tag</a>
-					<a class="navbar-item">Search</a>
+					<a class="navbar-item" href="@Context.GetLink(Outputs.Get("search.html"))">Search</a>
 				</div>
 			</div>
 		</nav>
