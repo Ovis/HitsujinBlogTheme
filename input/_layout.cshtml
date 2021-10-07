@@ -1,6 +1,7 @@
 @{
 	var title = Document.GetString("Title") ?? Document.GetString("SiteTitle");
     var isPost = Document.GetBool("IsPost") && title != "Tags" && title != "Archive";
+    var isFixedPage = Document.GetBool("IsFixedPage");
 }
 <!DOCTYPE html>
 <html class="has-background-light" lang="ja">
@@ -83,6 +84,15 @@
 										</div>
 									</header>
 									<div class="card-content pt-0">
+										<div class="content">
+											@RenderBody()
+										</div>
+									</div>
+								</article>
+							}
+							else if(isFixedPage){
+								<article class="card mb-6">
+									<div class="card-content">
 										<div class="content">
 											@RenderBody()
 										</div>
