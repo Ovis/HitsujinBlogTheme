@@ -9,6 +9,9 @@ a {
   }
 }
 
+/* Prism Syntax Hightlight */
+.token.number, .token.tag { all: inherit; }
+
 /* oembed */
 img {
   max-width: 50%;
