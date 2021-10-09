@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html class="has-background-light" lang="ja">
+	<head>
+		<title>@Document.GetString("PageTitle")</title>
+		<link rel="canonical" href="@(Document.GetString("Canonical") ?? Document.GetLink(true))">@{ @foreach (IDocument rssFeed in Outputs["**/*.rss"]) { 
+		<link type="application/rss+xml" rel="alternate" title="@rssFeed.GetString(WebKeys.Title)" href="@rssFeed.GetLink()" />} @foreach (IDocument atomFeed in Outputs["**/*.atom"]) { 
+		<link type="application/atom+xml" rel="alternate" title="@atomFeed.GetString(WebKeys.Title)" href="@atomFeed.GetLink()" />} } 
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">@if(Document.ContainsKey(WebKeys.Description)) { 
+		<meta name="description" content="@Document.GetString(WebKeys.Description)">} @if(Document.ContainsKey(WebKeys.Author)) { 
+		<meta name="author" content="@Document.GetString(WebKeys.Author)">} 
+		<meta name="application-name" content="@Document.GetString("SiteTitle")" />
+		<meta name="msapplication-tooltip" content="@Document.GetString("SiteTitle")" />
+		<meta name="msapplication-starturl" content="@Context.GetLink("/")" />
+		<meta property="og:title" content="@Document.GetString("PageTitle")" />@if (Document.ContainsKey(WebKeys.Image)) { 
+		<meta property="og:image" content="@Context.GetLink(Document.GetString(WebKeys.Image))" />} 
+		<meta property="og:type" content="website" />
+		<meta property="og:url" content="@Document.GetLink(true)" />
+		<link rel="shortcut icon" href="@Context.GetLink("/favicon.ico")" type="image/x-icon">
+		<link rel="icon" href="@Context.GetLink("/favicon.ico")" type="image/x-icon">
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.19.0/themes/prism.css">
+		<script src="https://cdn.jsdelivr.net/npm/prismjs@1.19.0/components/prism-core.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/prismjs@1.19.0/plugins/autoloader/prism-autoloader.min.js" data-no-mirror></script>
+		<script src="https://cdn.jsdelivr.net/npm/quicklink@2.0.0/dist/quicklink.umd.js"></script>
+		<link rel="stylesheet" href="@Context.GetLink("/css/blog.css")" rel="stylesheet">
+
+		@if (Context.GetBool(WebKeys.GenerateSearchIndex)) { 
+			<script src="https://cdn.jsdelivr.net/npm/lunr@2.3.9/lunr.min.js"></script>
+			<script src="https://cdn.jsdelivr.net/npm/pako@2.0.3/dist/pako_inflate.min.js"></script>
+			<script src="@(Context.GetLink(Context.GetPath(WebKeys.SearchScriptPath, "search.js")))"></script>
+		} 
+
+		@RenderSection("Head", false) 
+	</head>
+	<body>
+		@RenderSectionOrPartial("Navigation", "_navigation") 
+		<div class="section">
+			<div class="container">
+				<div class="columns is-desktop">
+					<div class="column is-three-quarters">
+						<main>
+							@RenderBody()
+						</main>
+					</div>
+					<div class="column">
+						@Html.Partial("_sidebar") 
+					</div>
+				</div>
+			</div>
+		</div>
+		@RenderSectionOrPartial("Footer", "_footer")
+		@Html.Partial("_scripts")
+		@RenderSection("Scripts", false) 
+	</body>
+</html>

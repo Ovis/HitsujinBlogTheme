@@ -10,8 +10,11 @@ ArchiveOrderDescending: true
 Title: Tags
 ArchiveTitle: => GetString("GroupKey")
 ---
+
 @if (Document.ContainsKey(Keys.GroupKey))
 {
+	Layout = "~/_noBoxLayout.cshtml";
+
 	@Html.Partial("/_posts.cshtml", 
 					Document,
 					new ViewDataDictionary(ViewData)
@@ -23,6 +26,8 @@ ArchiveTitle: => GetString("GroupKey")
 }
 else
 { 
+	Layout = "~/_layout.cshtml";
+
     @foreach (IDocument tag in Document.GetChildren().OrderByDescending(x => x.GetChildren().Count()))
     {
         string postCount = tag.GetChildren().Count().ToString();
