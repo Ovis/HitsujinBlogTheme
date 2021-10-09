@@ -34,7 +34,7 @@
 </aside>
 <aside class="mt-5">
 	<h1 class="title is-5">最新記事</h1>
-	<nav class="panel">
+	<nav class="panel panel-white">
 		@foreach(var article in Outputs.Get("posts.html").GetChildren().OrderByDescending(x => x.GetDateTime(WebKeys.Published)).Take(5)){
 			<a class="panel-block" href="@Context.GetLink(article)">
 				<span class="panel-icon">
@@ -46,7 +46,7 @@
 </aside>
 <aside class="mt-5">
 	<h1 class="title is-5">タグ</h1>
-	<nav class="panel">
+	<nav class="panel panel-white">
 		@{
                 IDocument[] tags = Outputs.Get("tags.html")?.GetChildren().OrderByDescending(x => x.GetChildren().Count()).Take(10).ToArray() ?? Array.Empty<IDocument>();
                 if (tags.Length > 0)
