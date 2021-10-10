@@ -12,4 +12,4 @@ Copyright: => $"Copyright © {DateTime.Now.Year}"
 PostSources: entry/**/*
 IsPost: => Outputs.FilterSources(Context.GetString("PostSources")).ContainsById(Document)
 Layout: /_layout.cshtml
-GenerateSearchIndex: true
+GenerateSearchIndex: false
