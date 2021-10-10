@@ -22,9 +22,11 @@
 
 	    pagerRangeMax = Math.Min(pagerMinCount - 1 + maxPagerSize, maxPage);
 	}
+	
+	var groupKey = NormalizedPath.OptimizeFileName(Model.GetString("GroupKey"));
 
-	var firstPageUrl = isIndexPage ? @Context.GetLink($"/") : @Context.GetLink($"/{pagePath}/{Model.GetString("GroupKey")}");
-	var lastPageUrl = isIndexPage ? @Context.GetLink($"/{pagePath}/{maxPage}") : @Context.GetLink($"/{pagePath}/{Model.GetString(Keys.GroupKey)}/{maxPage}");
+	var firstPageUrl = isIndexPage ? @Context.GetLink($"/") : @Context.GetLink($"/{pagePath}/{groupKey}");
+	var lastPageUrl = isIndexPage ? @Context.GetLink($"/{pagePath}/{maxPage}") : @Context.GetLink($"/{pagePath}/{groupKey}/{maxPage}");
 
 }
 @foreach (IDocument post in Model.GetChildren())
@@ -72,7 +74,7 @@
 	            	}else if(i == maxPage){
 	            		url = lastPageUrl;
 	            	}else{
-	            		url = isIndexPage ? @Context.GetLink($"/{pagePath}/{i}") : @Context.GetLink($"/{pagePath}/{Model.GetString("GroupKey")}/{i}");
+	            		url = isIndexPage ? @Context.GetLink($"/{pagePath}/{i}") : @Context.GetLink($"/{pagePath}/{groupKey}/{i}");
 	            	}
 	            
 	                <li class="page-item">

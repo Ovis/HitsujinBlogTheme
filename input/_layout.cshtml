@@ -34,7 +34,7 @@
 							<ul class="column tags pl-0">
 								@foreach(var tag in articleTags){ 
 									<li class="tag is-link is-light">
-										<a class="has-text-dark" href="@Context.GetLink($"/tags/{tag}")">@tag</a>
+										<a class="has-text-dark" href="@Context.GetLink($"/tags/{NormalizedPath.OptimizeFileName(tag)}")">@tag</a>
 									</li>
 								} 
 							</ul>
