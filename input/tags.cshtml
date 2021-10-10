@@ -28,9 +28,15 @@ else
 { 
 	Layout = "~/_layout.cshtml";
 
-    @foreach (IDocument tag in Document.GetChildren().OrderByDescending(x => x.GetChildren().Count()))
-    {
-        string postCount = tag.GetChildren().Count().ToString();
-        <a role="button" href="@Context.GetLink(tag)" class="badge badge-light"> @tag.GetTitle() (@postCount)</a>
-    }
+	<ul>
+	    @foreach (IDocument tag in Document.GetChildren().OrderByDescending(x => x.GetChildren().Count()))
+	    {
+	        string postCount = tag.GetChildren().Count().ToString();
+			<li>
+				<a role="button" href="@Context.GetLink(tag)" class="badge badge-light"> @tag.GetTitle() (@postCount)</a>
+			</li>
+	        
+	    }
+	</ul>
+
 }
