@@ -63,5 +63,14 @@
 		@RenderSectionOrPartial("Footer", "_footer")
 		@Html.Partial("_scripts")
 		@RenderSection("Scripts", false) 
+		<!-- Global site tag (gtag.js) - Google Analytics -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=G-21HJPJ2VN8"></script>
+		<script>
+		  window.dataLayer = window.dataLayer || [];
+		  function gtag(){dataLayer.push(arguments);}
+		  gtag('js', new Date());
+
+		  gtag('config', 'G-21HJPJ2VN8');
+		</script>
 	</body>
 </html>
